@@ -87,6 +87,14 @@ export default class App extends Component<{}> {
     )
   }
 
+  displayLinsen() {
+    return this.state.linsenMenu.map((x) =>
+    <View key={Math.random()}>
+        <View><Text style={{fontSize: 16, fontStyle: 'italic'}}>{x.dish}</Text></View>
+      </View>
+    )
+  }
+
   render() {
 
 
@@ -105,43 +113,44 @@ export default class App extends Component<{}> {
           </View>
 
           {/*L's Kitchen */}
-          <View style={styles.menus}>
-            <Text style={styles.titleText}>L's Kitchen</Text>
+          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
+          <Text style={styles.titleText}>L's Kitchen</Text>
             {this.checkOpen()}
             {this.displayMenu(this.state.lsMenu)}
           </View>
 
           {/*Kokboken */}
-          <View style={styles.menus}>
-            <Text style={styles.titleText}>Kokboken</Text>
+          <View style={[styles.menus, {backgroundColor: '#9E9E9E'}]}>
+          <Text style={styles.titleText}>Kokboken</Text>
             {this.checkOpen()}
             {this.displayMenu(this.state.kokbokenMenu)}
           </View>
-          
+
           {/*Kårrestaurangen */}
-          <View style={styles.menus}>
+          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
             <Text style={styles.titleText}>Kårrestaurangen</Text>
             {this.checkOpen()}
             {this.displayMenu(this.state.karenMenu)}
           </View>
-          
+
           {/*Express Johanneberg */}
-          <View style={styles.menus}>
+          <View style={[styles.menus, {backgroundColor: '#9E9E9E'}]}>
             <Text style={styles.titleText}>Express</Text>
             {this.checkOpen()}
             {this.displayMenu(this.state.expressMenu)}
           </View>
-          
+
           {/*Linsen */}
-          <View style={styles.menus}>
+          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
             <Text style={styles.titleText}>Linsen</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Dagens</Text>
             {this.checkOpen()}
-            {this.displayMenu(this.state.linsenMenu)}
+            {this.displayLinsen()}
           </View>
 
-          
 
-          
+
+
 
 
         </View>
@@ -164,27 +173,19 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    marginBottom: 20,
-    paddingTop: 40
+    padding: 30,
+    backgroundColor: '#616161'
+
     // backgroundColor: 'green'
   },
   menus: {
     flex: 1,
-    marginLeft: 20,
-    marginBottom: 20,
-    marginRight: 20
-
+    padding: 15,
     // backgroundColor: 'green'
   },
   welcome: {
-    fontSize: 36,
+    fontSize: 48,
     textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
   titleText: {
     fontSize: 24,

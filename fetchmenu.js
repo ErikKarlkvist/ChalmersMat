@@ -27,7 +27,7 @@ export async function fetchMenu(rest) {
             // console.log(responseJson);
             let categories = responseJson.menus[getWeekday()].recipeCategories
             // console.log(categories);
-            console.log(responseJson);
+            // console.log(responseJson);
             
             categories.forEach(dish => {
                 menu.push({
@@ -47,13 +47,14 @@ export async function fetchLinsen() {
     await fetch(linsenToday)
         .then((response) => response.json())
         .then((responseJson) => {
-            // console.log(responseJson);
-            let categories = responseJson.recipeCategories
-            // console.log(categories);
-            categories.forEach(dish => {
+            console.log(responseJson);
+            let categories = responseJson.recipeCategories[0]
+            console.log(categories);
+            categories.recipes.forEach(dish => {
                 menu.push({
-                    dishType: dish.name,
-                    dish: dish.recipes[0].displayNames[0].displayName
+                    id: categories.id + 1,
+                    dishType: categories.name,
+                    dish: dish.displayNames[0].displayName
                 })
             })
 

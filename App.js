@@ -15,7 +15,7 @@ import {
   RefreshControl
 } from 'react-native';
 import {
-  getWeekday, fetchLinsen,
+  getWeekday, fetchLinsen, checkOpen, 
   karen, express, ls, fetchMenu, test, kokboken
 } from './fetchmenu.js'
 
@@ -25,7 +25,6 @@ export default class App extends Component<{}> {
   constructor(props) {
     super(props)
     this.state = {
-      weekday: '',
       expressMenu: [],
       karenMenu: [],
       linsenMenu: [],
@@ -44,7 +43,6 @@ export default class App extends Component<{}> {
 
   componentDidMount() {
     this.update()
-    this.checkOpen()
   }
 
   update() {
@@ -65,39 +63,38 @@ export default class App extends Component<{}> {
     })
 
     fetchLinsen().then(val => {
-      // console.log(val)
       this.setState({ linsenMenu: val })
     })
-
-
-  }
-
-  checkOpen() {
-    let weekday = getWeekday()
-    if (weekday < 0 || weekday > 4)
-      return <Text style={{ fontSize: 16, fontStyle: 'italic' }}>Closed for the weekend</Text>
   }
 
   displayMenu(rest) {
-    return rest.map((x) =>
-      <View key={x.id}>
-        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{x.dishType}</Text>
-        <View><Text style={{fontSize: 16, fontStyle: 'italic'}}>{x.dish}</Text></View>
-      </View>
-    )
+    if (checkOpen())
+      return <View><Text style={{ fontSize: 16, fontStyle: 'italic' }}>Closed for the weekend</Text></View>
+    else {
+      return rest.map((x) =>
+        <View key={x.id}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{x.dishType}</Text>
+          <View><Text style={{fontSize: 16, fontStyle: 'italic'}}>{x.dish}</Text></View>
+        </View>
+      )
+    }
+
   }
 
   displayLinsen() {
-    return this.state.linsenMenu.map((x) =>
-    <View key={Math.random()}>
-        <View><Text style={{fontSize: 16, fontStyle: 'italic'}}>{x.dish}</Text></View>
-      </View>
-    )
+    if (checkOpen())
+      return <View><Text style={{ fontSize: 16, fontStyle: 'italic' }}>Closed for the weekend</Text></View>
+    else {
+      return this.state.linsenMenu.map((x) =>
+        <View key={Math.random()}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Dagens</Text>
+          <View><Text style={{fontSize: 16, fontStyle: 'italic'}}>{x.dish}</Text></View>
+        </View>
+      )
+    }
   }
 
   render() {
-
-
     return (
       <ScrollView refreshControl={
         <RefreshControl
@@ -113,46 +110,34 @@ export default class App extends Component<{}> {
           </View>
 
           {/*L's Kitchen */}
-          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
+          <View style={[styles.menus, {backgroundColor: '#90A4AE'}]}>
           <Text style={styles.titleText}>L's Kitchen</Text>
-            {this.checkOpen()}
             {this.displayMenu(this.state.lsMenu)}
           </View>
 
           {/*Kokboken */}
-          <View style={[styles.menus, {backgroundColor: '#9E9E9E'}]}>
+          <View style={[styles.menus, {backgroundColor: '#E0E0E0'}]}>
           <Text style={styles.titleText}>Kokboken</Text>
-            {this.checkOpen()}
             {this.displayMenu(this.state.kokbokenMenu)}
           </View>
 
           {/*Kårrestaurangen */}
-          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
+          <View style={[styles.menus, {backgroundColor: '#90A4AE'}]}>
             <Text style={styles.titleText}>Kårrestaurangen</Text>
-            {this.checkOpen()}
             {this.displayMenu(this.state.karenMenu)}
           </View>
 
           {/*Express Johanneberg */}
-          <View style={[styles.menus, {backgroundColor: '#9E9E9E'}]}>
+          <View style={[styles.menus, {backgroundColor: '#E0E0E0'}]}>
             <Text style={styles.titleText}>Express</Text>
-            {this.checkOpen()}
             {this.displayMenu(this.state.expressMenu)}
           </View>
 
           {/*Linsen */}
-          <View style={[styles.menus, {backgroundColor: '#607D8B'}]}>
+          <View style={[styles.menus, {backgroundColor: '#90A4AE'}]}>
             <Text style={styles.titleText}>Linsen</Text>
-            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Dagens</Text>
-            {this.checkOpen()}
             {this.displayLinsen()}
           </View>
-
-
-
-
-
-
         </View>
       </ScrollView>
 
@@ -167,14 +152,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#F5FCFF',
-    // backgroundColor: 'red'
   },
   header: {
     flex: 1,
     padding: 30,
-    backgroundColor: '#616161'
+    backgroundColor: '#E0E0E0'
 
     // backgroundColor: 'green'
   },
@@ -192,7 +175,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   contentContainer: {
-    marginBottom: 40
+    // marginBottom: 40
     // paddingTop: 40,
     // backgroundColor: "blue"
   }

@@ -18,17 +18,20 @@ export function getWeekday() {
     return d.getDay() - 1;
 }
 
+export function checkOpen() {
+    let weekday = getWeekday()
+    if (weekday < 0 || weekday > 4)
+        return true
+    else
+        return false
+}
 
 export async function fetchMenu(rest) {
     let menu = []
     await fetch(rest)
         .then((response) => response.json())
         .then((responseJson) => {
-            // console.log(responseJson);
             let categories = responseJson.menus[getWeekday()].recipeCategories
-            // console.log(categories);
-            // console.log(responseJson);
-            
             categories.forEach(dish => {
                 menu.push({
                     id: dish.id,
@@ -47,17 +50,14 @@ export async function fetchLinsen() {
     await fetch(linsenToday)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             let categories = responseJson.recipeCategories[0]
-            console.log(categories);
             categories.recipes.forEach(dish => {
                 menu.push({
-                    id: categories.id + 1,
+                    id: categories.id,
                     dishType: categories.name,
                     dish: dish.displayNames[0].displayName
                 })
             })
-
         }).catch(error => {
             console.log(error);
         })

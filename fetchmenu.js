@@ -12,6 +12,8 @@ export var express = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menu
 export var ls = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menuscreen/getdataweek?restaurantid=8'
 export var linsenToday = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menuscreen/getdataday?restaurantid=33'
 export var kokboken = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menuscreen/getdataweek?restaurantid=35'
+export var linsen = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menuscreen/getdataweek?restaurantid=33'
+
 
 export function getWeekday() {
     var d = new Date();
@@ -21,9 +23,9 @@ export function getWeekday() {
 export function checkOpen() {
     let weekday = getWeekday()
     if (weekday < 0 || weekday > 4)
-        return true
-    else
         return false
+    else
+        return true
 }
 
 export async function fetchMenu(rest) {
@@ -44,6 +46,32 @@ export async function fetchMenu(rest) {
         })
     return menu;
 }
+
+export async function fetchWeekMenu(rest) {
+    let weekMenu = []
+    
+    await fetch(rest)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            let menus = responseJson.menus
+            menus.forEach(day => {
+                console.log(day);
+                let dayMenu = []
+                day.recipeCategories.forEach(dish => {
+                    dayMenu.push({
+                        id: dish.id,
+                        dishType: dish.name,
+                        dish: dish.recipes[0].displayNames[0].displayName
+                    })
+                })
+                weekMenu.push(dayMenu)
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    return weekMenu;
+}
+
 
 export async function fetchLinsen() {
     let menu = []

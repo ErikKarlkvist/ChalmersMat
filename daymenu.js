@@ -72,7 +72,7 @@ export default class DayMenu extends Component<{}> {
   }
 
   displayMenu(rest) {
-    if (!checkOpen())
+    if (rest == undefined)
       return <View><Text style={{ fontSize: 16, fontStyle: 'italic' }}>Closed for the weekend.</Text></View>
     else {
       return rest.map((x) =>

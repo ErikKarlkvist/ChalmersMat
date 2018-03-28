@@ -17,7 +17,7 @@ export var linsen = 'http://carboncloudrestaurantapi.azurewebsites.net/api/menus
 
 export function getWeekday() {
     var d = new Date();
-    return d.getDay() - 1;
+    return d.getDay() - 1 + 2;
 }
 
 export function checkOpen() {
@@ -33,13 +33,17 @@ export async function fetchMenu(rest) {
     await fetch(rest)
         .then((response) => response.json())
         .then((responseJson) => {
+            
             let categories = responseJson.menus[getWeekday()].recipeCategories
+            // console.log(categories);
             categories.forEach(dish => {
-                menu.push({
-                    id: dish.id,
-                    dishType: dish.name,
-                    dish: dish.recipes[0].displayNames[0].displayName
-                })
+                if(dish.recipes.length > 0){
+                    menu.push({
+                        id: dish.id,
+                        dishType: dish.name,
+                        dish: dish.recipes[0].displayNames[0].displayName
+                    })
+                }
             })
         }).catch(error => {
             console.log(error);
@@ -55,7 +59,6 @@ export async function fetchWeekMenu(rest) {
         .then((responseJson) => {
             let menus = responseJson.menus
             menus.forEach(day => {
-                console.log(day);
                 let dayMenu = []
                 day.recipeCategories.forEach(dish => {
                     dayMenu.push({

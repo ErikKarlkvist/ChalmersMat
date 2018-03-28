@@ -43,7 +43,9 @@ export default class WeekMenu extends Component<{}> {
 
   displayMenu(number) {
     const { params } = this.props.navigation.state
-    if(this.state.weekMenu.length > 0){
+    if(this.state.weekMenu[number] == undefined)
+      return <View><Text style={{ fontSize: 16, fontStyle: 'italic' }}>No lunch today.</Text></View>
+    else {
       return this.state.weekMenu[number].map((x) =>
         <View key={x.id}>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{x.dishType}</Text>
